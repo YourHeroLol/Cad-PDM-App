@@ -8,10 +8,7 @@ import { useState } from "react";
 function App() {
   const [search, setSearch] = useState("");
 
-  const [selectedFileId, setSelectedFileId] = useState(null);
-
-  const selectedFile =
-    files.find((file) => file.id === selectedFileId) ?? null;
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const [files, setFiles] = useState(cadFiles);
 
@@ -53,7 +50,7 @@ function App() {
   return (
     
 
-    <div>
+    <div className = "vault-header">
       <h1>CAMRE CAD Vault</h1>
       <input
         type="text"
@@ -62,32 +59,66 @@ function App() {
         onChange={(event) => setSearch(event.target.value)}
       />
 
-      <CADFileLibrary
-      files={filteredFiles}
-      onSelectFile={(file) => setSelectedFileId(file.id)}
-      checkOutFile={checkOutFile}
-      checkInFile={checkInFile}
-      />
+      <div className="vault-layout">
 
-      
+        <div className="file-list">
+          <CADFileLibrary
+            files={filteredFiles}
+            onSelectFile={setSelectedFile}
+            checkOutFile={checkOutFile}
+            checkInFile={checkInFile}
+          />
+        </div>
 
-      {selectedFile && (
-      <div className="details-panel">
-        <h2>{selectedFile.name}</h2>
+        <div className="details-panel">
+          {selectedFile ? (
+            <>
+              <h2>{selectedFile.name}</h2>
 
-        <p>File: {selectedFile.fileName}</p>
-        <p>Type: {selectedFile.fileType}</p>
-        <p>Version: {selectedFile.version}</p>
-        <p>Created By: {selectedFile.createdBy}</p>
-        <p>Last Updated: {selectedFile.lastUpdated}</p>
+                <table className="details-table">
+                  <tbody>
+                    <tr>
+                      <th>File</th>
+                      <td>{selectedFile.fileName}</td>
+                    </tr>
 
-        <p>
-          {selectedFile.checkedOut
-            ? `Locked by ${selectedFile.checkedOutBy}`
-            : "Available"}
-        </p>
+                    <tr>
+                      <th>Type</th>
+                      <td>{selectedFile.fileType}</td>
+                    </tr>
+
+                    <tr>
+                      <th>Version</th>
+                      <td>{selectedFile.version}</td>
+                    </tr>
+
+                    <tr>
+                      <th>Created By</th>
+                      <td>{selectedFile.createdBy}</td>
+                    </tr>
+
+                    <tr>
+                      <th>Last Updated</th>
+                      <td>{selectedFile.lastUpdated}</td>
+                    </tr>
+
+                    <tr>
+                      <th>Status</th>
+                      <td>
+                        {selectedFile.checkedOut
+                          ? `🔒 Locked by ${selectedFile.checkedOutBy}`
+                          : "🟢 Available"}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </>
+          ) : (
+            <p>Select a file to view its details.</p>
+          )}
+        </div>
+        
       </div>
-    )}
     </div>
   );
 }
