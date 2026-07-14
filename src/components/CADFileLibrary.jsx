@@ -1,8 +1,12 @@
 import CADFileCard from "./CADFileCard";
 
 function CADFileLibrary({ files, onSelectFile, checkOutFile, checkInFile }) {
+  if (files.length === 0) {
+    return <p className="empty-state">No CAD files match your search.</p>;
+  }
+
   return (
-    <>
+    <div className="cad-file-library">
       {files.map((file) => (
         <CADFileCard
           key={file.id}
@@ -12,7 +16,7 @@ function CADFileLibrary({ files, onSelectFile, checkOutFile, checkInFile }) {
           checkInFile={checkInFile}
         />
       ))}
-    </>
+    </div>
   );
 }
 
