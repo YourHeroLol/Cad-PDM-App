@@ -1,28 +1,38 @@
 function CADFileCard({ file, onSelectFile, checkOutFile, checkInFile }) {
   return (
-    <div className="cad-file-card">
+    <article className="cad-file-card">
       <h2>{file.name}</h2>
 
-      {file.checkedOut ? (
-        <p>🔒 Checked Out by {file.checkedOutBy}</p>
-      ) : (
-        <p>🟢 Available</p>
-      )}
+      <p>
+        {file.checkedOut
+          ? `🔒 Checked out by ${file.checkedOutBy}`
+          : "🟢 Available"}
+      </p>
 
-      <button onClick={() => onSelectFile(file)}>
-        Details
-      </button>
+      <div className="card-actions">
+        <button type="button" onClick={() => onSelectFile(file)}>
+          Details
+        </button>
 
-      {file.checkedOut ? (
-        <button onClick={() => checkInFile(file.id)}>
-          Check In
-        </button>
-      ) : (
-        <button onClick={() => checkOutFile(file.id)}>
-          Check Out
-        </button>
-      )}
-    </div>
+        {file.checkedOut ? (
+          <button
+            className="primary-button"
+            type="button"
+            onClick={() => checkInFile(file.id)}
+          >
+            Check In
+          </button>
+        ) : (
+          <button
+            className="primary-button"
+            type="button"
+            onClick={() => checkOutFile(file.id)}
+          >
+            Check Out
+          </button>
+        )}
+      </div>
+    </article>
   );
 }
 
